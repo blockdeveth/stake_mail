@@ -5,7 +5,7 @@ Demo video: https://youtu.be/P1rUBsEHTM4
 https://github.com/kleros/dapp-ideas/issues/21
 
 It has 2 contracts:
-- SafeMail([sol](https://github.com/blockdeveth/stake_mail/blob/main/contracts/SafeMail.sol#L66)): through which users cand send message via contract events.
+- SafeMail([sol](https://github.com/blockdeveth/stake_mail/blob/main/contracts/SafeMail.sol#L66)): through which users can send message via contract events.
 - Stake([sol](https://github.com/blockdeveth/stake_mail/blob/main/contracts/Stake.sol)): When user sends a mail, their 1 MAIL token is locked in Stake contract.
 
 Receiver can `[reportSpam](https://github.com/blockdeveth/stake_mail/blob/main/contracts/SafeMail.sol#L75)` the mail, and Kleros court will take a decision.
