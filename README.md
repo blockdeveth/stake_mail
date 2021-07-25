@@ -1,6 +1,7 @@
 # Prototype for stake mail
 
 Demo video: https://youtu.be/ovOjW3ByODA
+
 https://github.com/kleros/dapp-ideas/issues/21
 
 It has 2 contracts:
