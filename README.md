@@ -31,3 +31,6 @@ Centralized Arbitrator: https://kovan.etherscan.io/address/0x4d733181b675bb56de1
 ## Future Work
 - There is no privacy in the mechanism. All the mails can be seen by anyone. Use private and public key encryption.
 - Add a timeout so that receiver can report a mail within a day of receiving it.
+
+## Components used
+The app was bootstrapped from [create-eth-app](https://github.com/paulrberg/create-eth-app), and [Kleros documentation](https://kleros.gitbook.io/docs/).
