@@ -12,6 +12,8 @@ function Mail() {
     const [mail, setMail] = useState();
     const [to_address, setToAddress] = useState();
     const [loading, setLoading] = useState(false);
+    const [mailId, setMailId] = useState(0);
+    const [sender, setSenderAddress] = useState();
 
     const [web3, setWeb3] = useState();
     const [infuraProvider, setInfuraProvider] = useState();
@@ -53,6 +55,21 @@ function Mail() {
         setLoading(false);
     }
 
+    async function report() {
+        setLoading(true);
+
+        const signer = infuraProvider.getSigner()
+        const mailContract = new ethers.Contract(addresses.safeMail, abis.safeMail, signer);
+        const txn = await mailContract.reportSpam(0, mailId, sender);
+        await txn.wait();
+
+        alert("mail sent");
+
+        // setReceipt('Congratulations! Money sent 🥳');
+        // console.log({userReceipt});
+        setLoading(false);
+    }
+    
     return (
         <div className="App">
             <Form loading={loading}>
@@ -63,7 +80,16 @@ function Mail() {
                     <input onChange={e => setMail(e.target.value)} placeholder="Enter mail" /><br />
                 </Form.Field>
                 <Form.Field>
-                    <Button onClick={Send}>Send 🏁</Button>
+                    <Button onClick={Send}>Send 🏁</Button><br />
+                </Form.Field>
+                <Form.Field>
+                    <input onChange={e => setMailId(e.target.value)} placeholder="Enter MailId" /><br />
+                </Form.Field>
+                <Form.Field>
+                    <input onChange={e => setSenderAddress(e.target.value)} placeholder="Who sent the mail?" /><br />
+                </Form.Field>
+                <Form.Field>
+                    <Button onClick={report}>Report 👩‍⚖️</Button><br />
                 </Form.Field>
             </Form>
         </div>
