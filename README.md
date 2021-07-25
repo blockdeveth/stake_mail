@@ -1,6 +1,6 @@
 # Prototype for stake mail
 
-Demo video: https://youtu.be/ovOjW3ByODA
+Demo video: https://youtu.be/P1rUBsEHTM4
 
 https://github.com/kleros/dapp-ideas/issues/21
 
