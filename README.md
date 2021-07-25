@@ -17,6 +17,8 @@ Centralized Arbitrator: https://kovan.etherscan.io/address/0x4d733181b675bb56de1
 ## UI
 - Start a local server: `yarn react-app:start`
 - It shows the interface to send a mail.
+<img width="1421" alt="Screen Shot 2021-07-25 at 3 25 45 PM" src="https://user-images.githubusercontent.com/1689531/126902720-18d65ad6-fbc5-4ece-8d2d-7e9563f31dd2.png">
+
 - After sending the mail, get the mailId from the [kovan events page](0x84373A4b2D2E3349C68C0d5B244A729cB370D9fa).
 - Report it from the interface and head over to https://centralizedarbitrator.kleros.io/
 - Use `0x4d733181b675bb56de1b516fc6cbf0015c7cf1f1` as the Arbitrator (or deploy your own and add the new address in this code).
