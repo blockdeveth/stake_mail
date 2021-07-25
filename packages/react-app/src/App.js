@@ -6,9 +6,16 @@ import { useQuery } from "@apollo/react-hooks";
 import { Body, Button, Header, Image, Link } from "./components";
 import logo from "./ethereumLogo.png";
 import useWeb3Modal from "./hooks/useWeb3Modal";
-
+import {
+    HashRouter as Router,
+    Switch,
+    Route,
+    Link as ReactLink
+} from "react-router-dom";
 import { addresses, abis } from "@project/contracts";
 import GET_TRANSFERS from "./graphql/subgraph";
+import Mail from "./Mail";
+// import Admin from "./Admin";
 
 async function readOnChainData() {
   // Should replace with the end-user wallet, e.g. Metamask
@@ -48,26 +55,22 @@ function App() {
   }, [loading, error, data]);
 
   return (
-    <div>
-      <Header>
-        <WalletButton provider={provider} loadWeb3Modal={loadWeb3Modal} logoutOfWeb3Modal={logoutOfWeb3Modal} />
-      </Header>
-      <Body>
-        <Image src={logo} alt="react-logo" />
-        <p>
-          Edit <code>packages/react-app/src/App.js</code> and save to reload.
-        </p>
-        {/* Remove the "hidden" prop and open the JavaScript console in the browser to see what this function does */}
-        <Button hidden onClick={() => readOnChainData()}>
-          Read On-Chain Balance
-        </Button>
-        <Link href="https://ethereum.org/developers/#getting-started" style={{ marginTop: "8px" }}>
-          Learn Ethereum
-        </Link>
-        <Link href="https://reactjs.org">Learn React</Link>
-        <Link href="https://thegraph.com/docs/quick-start">Learn The Graph</Link>
-      </Body>
-    </div>
+    <Router>
+      <Switch>
+        <div>
+          <Header>
+           <div> <WalletButton provider={provider} loadWeb3Modal={loadWeb3Modal} logoutOfWeb3Modal={logoutOfWeb3Modal} /> </div>
+            <div><ReactLink to={'/admin'} target='_blank' style={{ color: '#FFF' }}>Go to Admin</ReactLink>&#8203; &#8203; </div>
+          </Header>
+          <Body>
+
+            <Route exact path="/" component={Mail} />
+            {/* <Route exact path="/admin" component={Admin} /> */}
+
+          </Body>
+        </div>
+      </Switch>
+    </Router>
   );
 }
 
