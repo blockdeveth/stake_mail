@@ -23,7 +23,7 @@ function Mail() {
     console.log(abis.safeMail);
     const signer = etherProvider.getSigner();
     const mailContract = new ethers.Contract(addresses.safeMail, abis.safeMail, signer);
-    
+
     useEffect(() => {
         async function fetchData() {
             // Runs after the first render() lifecycle
@@ -69,7 +69,7 @@ function Mail() {
 
         setLoading(false);
     }
-    
+
     return (
         <div className="App">
             <Form loading={loading}>

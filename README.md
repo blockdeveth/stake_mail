@@ -1,135 +1,39 @@
-This project was bootstrapped with [Create Eth App](https://github.com/paulrberg/create-eth-app).
+# Prototype for stake mail
 
-## Project Structure
+https://github.com/kleros/dapp-ideas/issues/21
 
-The default template is a monorepo created with [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces/).
+It has 2 contracts:
+- SafeMail([sol](https://github.com/blockdeveth/stake_mail/blob/main/contracts/SafeMail.sol#L66)): through which users cand send message via contract events.
+- Stake([sol](https://github.com/blockdeveth/stake_mail/blob/main/contracts/Stake.sol)): When user sends a mail, their 1 MAIL token is locked in Stake contract.
 
-Workspaces makes it possible to setup multiple packages in such a way that we only need to run `yarn install` once to install all of them in
-a single pass. Dependencies are hoisted at the root.
+Receiver can `[reportSpam](https://github.com/blockdeveth/stake_mail/blob/main/contracts/SafeMail.sol#L75)` the mail, and Kleros court will take a decision.
+If the mail is judged to be spam, then sender's 1 MAIL token is sent from Stake contract to receiver, otherwise, it is returned to sender.
 
-```
-my-eth-app
-├── README.md
-├── node_modules
-├── package.json
-├── .gitignore
-└── packages
-    ├── contracts
-    │   ├── README.json
-    │   ├── package.json
-    │   └── src
-    │       ├── abis
-    │       │   ├── erc20.json
-    │       │   └── ownable.json
-    │       ├── addresses.js
-    │       └── index.js
-    ├── react-app
-    │   ├── README.md
-    │   ├── node_modules
-    │   ├── package.json
-    │   ├── public
-    │   │   ├── favicon.ico
-    │   │   ├── index.html
-    │   │   ├── logo192.png
-    │   │   ├── logo512.png
-    │   │   ├── manifest.json
-    │   │   └── robots.txt
-    │   └── src
-    │       ├── App.css
-    │       ├── App.js
-    │       ├── App.test.js
-    │       ├── ethereumLogo.svg
-    │       ├── index.css
-    │       ├── index.js
-    │       ├── serviceWorker.js
-    │       └── setupTests.js
-    └── subgraph
-        ├── README.md
-        ├── abis
-        │   └── erc20.json
-        ├── package.json
-        ├── schema.graphql
-        ├── src
-        │   └── mappings
-        │       ├── tokens.ts
-        │       └── transfers.ts
-        └── subgraph.yaml
-```
+Contracts are deployed on Kovan: 
+- SafeMail: https://kovan.etherscan.io/address/0x84373A4b2D2E3349C68C0d5B244A729cB370D9fa
+- Stake: https://kovan.etherscan.io/address/0x100159abe1968490dF780cFf4C7F14c0Bbe24C16#writeContract
+- Centralized Arbitrator: https://kovan.etherscan.io/address/0x4d733181b675bb56de1b516fc6cbf0015c7cf1f1
 
-Owing to this dependency on Yarn Workspaces, Create Eth App can't be used with npm.
+## UI
+- Start a local server: `yarn react-app:start`
+- It shows the interface to send a mail.
+<img width="1421" alt="Screen Shot 2021-07-25 at 3 25 45 PM" src="https://user-images.githubusercontent.com/1689531/126902720-18d65ad6-fbc5-4ece-8d2d-7e9563f31dd2.png">
 
-## Available Scripts
+- After sending the mail, get the mailId from the [kovan events page](0x84373A4b2D2E3349C68C0d5B244A729cB370D9fa).
+<img width="705" alt="Screen Shot 2021-07-25 at 3 33 55 PM" src="https://user-images.githubusercontent.com/1689531/126903009-afabd2cc-39d6-4531-9d56-7bf7e42fe800.png">
 
-In the project directory, you can run:
+- Using the mailId, report it from the interface, and head over to https://centralizedarbitrator.kleros.io/
 
-### React App
+- Use `0x4d733181b675bb56de1b516fc6cbf0015c7cf1f1` as the Arbitrator (or deploy your own and add the new address in this code).
+<img width="1428" alt="Screen Shot 2021-07-25 at 3 16 35 PM" src="https://user-images.githubusercontent.com/1689531/126902354-241feef8-bf65-47a6-9cca-60beba03341d.png">
 
-#### `yarn react-app:start`
+- It will load all the current disputes.
 
-Runs the React app in development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- You can vote and check the subsequent balance of sender and receiver based on your vote.
 
-The page will automatically reload if you make changes to the code.<br>
-You will see the build errors and lint warnings in the console.
+## Future Work
+- There is no privacy in the mechanism. All the mails can be seen by anyone. Use private and public key encryption.
+- Add a timeout so that receiver can report a mail within a day of receiving it.
 
-#### `yarn react-app:test`
-
-Runs the React test watcher in an interactive mode.<br>
-By default, runs tests related to files changed since the last commit.
-
-[Read more about testing React.](https://facebook.github.io/create-react-app/docs/running-tests)
-
-#### `yarn react-app:build`
-
-Builds the React app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the React documentation on [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-#### `yarn react-app:eject`
-
-**Note: this is a one-way operation. Once you `react-app:eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` the React app at any time. This command will
-remove the single build dependency from your React package.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right
-into the `react-app` package so you have full control over them. All of the commands except `react-app:eject` will still work,
-but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `react-app:eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-### Subgraph
-
-The Graph is a tool for for indexing events emitted on the Ethereum blockchain. It provides you with an easy-to-use GraphQL API. <br/>
-
-To learn more, check out the [The Graph documentation](https://thegraph.com/docs).
-
-#### `yarn subgraph:codegen`
-
-Generates AssemblyScript types for smart contract ABIs and the subgraph schema.
-
-#### `yarn subgraph:build`
-
-Compiles the subgraph to WebAssembly.
-
-#### `yarn subgraph:auth`
-
-Before deploying your subgraph, you need to sign up on the
-[Graph Explorer](https://thegraph.com/explorer/). There, you will be given an access token. Drop it in the command
-below:
-
-```sh
-GRAPH_ACCESS_TOKEN=your-access-token-here yarn subgraph:auth
-```
-
-#### `yarn subgraph:deploy`
-
-Deploys the subgraph to the official Graph Node.<br/>
-
-Replace `paulrberg/create-eth-app` in the package.json script with your subgraph's name.
-
-You may also want to [read more about the hosted service](https://thegraph.com/docs/quick-start#hosted-service).
+## Components used
+The app was bootstrapped from [create-eth-app](https://github.com/paulrberg/create-eth-app), and [Kleros documentation](https://kleros.gitbook.io/docs/).
